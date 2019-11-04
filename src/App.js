@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import Header from './components/Header';
 import AllPhotos from './components/AllPhotos';
+import ImageUploader from './components/ImageUploader';
 
 class App extends Component {
   constructor(props) {
@@ -31,6 +32,7 @@ class App extends Component {
     return (
       <div className="App">
         <Header/>
+        <ImageUploader/>
         <AllPhotos/>
       </div>
     );
