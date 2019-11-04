@@ -22,6 +22,11 @@ class App extends Component {
     }
   }
 
+  addMoreImages() {
+    // when images are added via the upload button, add them to "photos" in state
+    this.photos.push({src: "", width: null, height: null},)
+  }
+
   render() {
     return (
       <div className="App">
