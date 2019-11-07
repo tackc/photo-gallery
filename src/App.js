@@ -21,6 +21,7 @@ class App extends Component {
         },
       ]
     }
+    this.addMoreImages = this.addMoreImages.bind(this)
   }
 
   addMoreImages() {
@@ -32,7 +33,7 @@ class App extends Component {
     return (
       <div className="App">
         <Header/>
-        <ImageUploader/>
+        <ImageUploader addMoreImages />
         <AllPhotos/>
       </div>
     );
