@@ -26,9 +26,9 @@ class App extends Component {
     this.calculateAspectRatio = this.calculateAspectRatio.bind(this)
   }
 
-  addMoreImages() {
+  addMoreImages(image) {
     // assign width and height approximate aspect ratio to incoming image
-
+    this.calculateAspectRatio(image)
     // when images are added via the upload button, add them to "photos" in state
     this.photos.push({src: "", width: null, height: null},)
   }
