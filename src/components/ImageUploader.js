@@ -10,6 +10,7 @@ class ImageUploader extends Component {
                     <form method="post" action="#" id="#">
                         <div className="form-group files color">
                             <input type="file" className="form-control" multiple />
+                            <button type="button" class="btn btn-success btn-block" onClick={this.onClickHandler}>Upload</button>
                         </div>
                     </form>
                     </div>

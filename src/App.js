@@ -23,7 +23,8 @@ class App extends Component {
       ]
     }
     this.addMoreImages = this.addMoreImages.bind(this);
-    this.calculateAspectRatio = this.calculateAspectRatio.bind(this)
+    this.calculateAspectRatio = this.calculateAspectRatio.bind(this);
+    this.onUploadClickHandler = this.onUploadClickHandler.bind(this);
   }
 
   addMoreImages(image) {
@@ -47,11 +48,16 @@ class App extends Component {
     // assign width and height that based on results
   }
 
+  onUploadClickHandler = () => {
+    const data = new FormData() 
+    data.append('file', this.state.selectedFile)
+  }
+
   render() {
     return (
       <div className="App">
         <Header/>
-        <ImageUploader addMoreImages />
+        <ImageUploader addMoreImages={this.addMoreImages} onUploadClickHandler={this.onUploadClickHandler} />
         <AllPhotos/>
       </div>
     );
