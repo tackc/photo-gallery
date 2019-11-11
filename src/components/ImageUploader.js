@@ -9,6 +9,8 @@ class ImageUploader extends Component {
         this.state = {
             selectedFile: null,
         }
+        this.onChangeHandler = this.onChangeHandler.bind(this);
+        this.onUploadClickHandler = this.onUploadClickHandler.bind(this)
     }
 
     onChangeHandler(event) {
@@ -41,7 +43,7 @@ class ImageUploader extends Component {
                             <label>Upload Your File</label>
                             <input type="file" name="file" className="form-control" multiple="" onChange={this.onChangeHandler}/>
                         </div>
-                        <button type="button" className="btn btn-success btn-block">Upload</button>
+                        <button type="button" className="btn btn-success btn-block" onClick={this.onUploadClickHandler}>Upload</button>
                     </div>
                 </div>
             </div>
