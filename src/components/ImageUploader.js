@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Progress } from 'reactstrap';
 import axios from 'axios';
 
 import './imageUploader.css';
@@ -8,6 +9,7 @@ class ImageUploader extends Component {
         super(props)
         this.state = {
             selectedFile: null,
+            loaded: 0
         }
         this.onChangeHandler = this.onChangeHandler.bind(this);
         this.onUploadClickHandler = this.onUploadClickHandler.bind(this)
@@ -17,7 +19,7 @@ class ImageUploader extends Component {
         console.log(event.target.files)
         var files = event.target.files
 
-        if(this.maxSelectFile(event) && this.checkMimeType(event)) {
+        if(this.maxSelectFile(event) && this.checkMimeType(event) && this.checkMimeType(event)) {
             this.setState({
                 selectedFile: files,
             })
@@ -30,7 +32,12 @@ class ImageUploader extends Component {
             data.append('file', this.state.selectedFile[x])
         }
         axios.post("http://localhost:8000/upload", data, { 
-            // receive two parameter endpoint url ,form data 
+            // receive two parameters -  endpoint url & form data
+            onUploadProgress: ProgressEvent => {
+                this.setState({
+                    loaded: (ProgressEvent.loaded / ProgressEvent.total*100)
+                })
+            }
         })
         .then(res => { 
             // then print response status
@@ -51,7 +58,7 @@ class ImageUploader extends Component {
 
     checkMimeType(event) {
         let files = event.target.files
-        let err = ''
+        let err = []
         const types = ['image/png', 'image/jpeg']
 
         for (let i = 0; i < files.length; i++) {
@@ -68,6 +75,26 @@ class ImageUploader extends Component {
         return true
     }
 
+    checkFileSize(event) {
+        let files = event.target.files
+        let size = 12000
+        let err = ''
+
+        for(let i = 0; i < files.length; i++) {
+            if (files[i].size > size) {
+                err += files[i].type + " is too large, please pick a smaller file\n"
+            }
+        }
+
+        if (err !== '') {
+            event.target.value = null
+            console.log(err)
+            return false
+        }
+
+        return true
+    }
+
 
     render() {
         return(
@@ -77,6 +104,9 @@ class ImageUploader extends Component {
                         <div className="form-group files color">
                             <label>Upload Your File</label>
                             <input type="file" name="file" className="form-control" multiple onChange={this.onChangeHandler}/>
+                        </div>
+                        <div className="form-group">
+                            <Progress max="100" color="success" value={this.state.loaded}> {Math.round(this.state.loaded, 2)}%</Progress>
                         </div>
                         <button type="button" className="btn btn-success btn-block" onClick={this.onUploadClickHandler}>Upload</button>
                     </div>
