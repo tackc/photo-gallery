@@ -20,7 +20,8 @@ class App extends Component {
             width: 1,
             height: 1
         },
-      ]
+      ],
+      selectedFile: null
     }
     this.addMoreImages = this.addMoreImages.bind(this);
     this.calculateAspectRatio = this.calculateAspectRatio.bind(this);
@@ -48,7 +49,7 @@ class App extends Component {
     // assign width and height that based on results
   }
 
-  onUploadClickHandler = () => {
+  onUploadClickHandler() {
     const data = new FormData() 
     data.append('file', this.state.selectedFile)
   }
