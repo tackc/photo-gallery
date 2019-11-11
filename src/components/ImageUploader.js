@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import axios from 'axios';
+
 import './imageUploader.css';
 
 class ImageUploader extends Component {
@@ -20,6 +22,13 @@ class ImageUploader extends Component {
     onUploadClickHandler() {
         const data = new FormData() 
         data.append('file', this.state.selectedFile)
+        axios.post("http://localhost:8000/upload", data, { 
+            // receive two parameter endpoint url ,form data 
+        })
+        .then(res => { 
+            // then print response status
+            console.log(res.statusText)
+        })
     }
 
 
