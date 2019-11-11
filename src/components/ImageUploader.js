@@ -14,16 +14,21 @@ class ImageUploader extends Component {
     }
 
     onChangeHandler(event) {
-        console.log(event.target.files[0])
-        this.setState({
-            selectedFile: event.target.files[0],
-            loaded: 0,
-        })
+        console.log(event.target.files)
+        var files = event.target.files
+
+        if(this.maxSelectFile(event) && this.checkMimeType(event)) {
+            this.setState({
+                selectedFile: files,
+            })
+        }
     }
 
     onUploadClickHandler() {
-        const data = new FormData() 
-        data.append('file', this.state.selectedFile)
+        const data = new FormData()
+        for (let x = 0; x < this.state.selectedFile[x]; x++) {
+            data.append('file', this.state.selectedFile[x])
+        }
         axios.post("http://localhost:8000/upload", data, { 
             // receive two parameter endpoint url ,form data 
         })
@@ -31,6 +36,36 @@ class ImageUploader extends Component {
             // then print response status
             console.log(res.statusText)
         })
+    }
+
+    maxSelectFile(event) {
+        let files = event.target.files
+        if (files.length > 3) {
+            const msg = 'Only 3 images can be uploaded at a time'
+            event.target.value = null
+            console.log(msg)
+            return false;
+        }
+        return true
+    }
+
+    checkMimeType(event) {
+        let files = event.target.files
+        let err = ''
+        const types = ['image/png', 'image/jpeg']
+
+        for (let i = 0; i < files.length; i++) {
+            if (types.every(type => files[i].type !== type)) {
+                err += files[i].type + ' is not a supported format\n'
+            }
+        }
+
+        if (err !== '') {
+            event.target.value = null
+            console.log(err)
+            return false
+        }
+        return true
     }
 
 
@@ -41,7 +76,7 @@ class ImageUploader extends Component {
                     <div className="offset-md-3 col-md-6">
                         <div className="form-group files color">
                             <label>Upload Your File</label>
-                            <input type="file" name="file" className="form-control" multiple="" onChange={this.onChangeHandler}/>
+                            <input type="file" name="file" className="form-control" multiple onChange={this.onChangeHandler}/>
                         </div>
                         <button type="button" className="btn btn-success btn-block" onClick={this.onUploadClickHandler}>Upload</button>
                     </div>
