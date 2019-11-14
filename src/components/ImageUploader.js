@@ -12,7 +12,10 @@ class ImageUploader extends Component {
             loaded: 0
         }
         this.onChangeHandler = this.onChangeHandler.bind(this);
-        this.onUploadClickHandler = this.onUploadClickHandler.bind(this)
+        this.onUploadClickHandler = this.onUploadClickHandler.bind(this);
+        this.maxSelectFile = this.maxSelectFile.bind(this);
+        this.checkMimeType = this.checkMimeType.bind(this);
+        this.checkFileSize = this.checkFileSize.bind(this);
     }
 
     onChangeHandler(event) {
@@ -28,8 +31,8 @@ class ImageUploader extends Component {
 
     onUploadClickHandler() {
         const data = new FormData()
-        for (let x = 0; x < this.state.selectedFile[x]; x++) {
-            data.append('file', this.state.selectedFile[x])
+        for (let i = 0; i < this.state.selectedFile[i]; i++) {
+            data.append('file', this.state.selectedFile[i])
         }
         axios.post("http://localhost:8000/upload", data, { 
             // receive two parameters -  endpoint url & form data
@@ -102,7 +105,7 @@ class ImageUploader extends Component {
                 <div className="row">
                     <div className="offset-md-3 col-md-6">
                         <div className="form-group files color">
-                            <label>Upload Your File</label>
+                            <label>Upload Your File</label><br/>
                             <input type="file" name="file" className="form-control" multiple onChange={this.onChangeHandler}/>
                         </div>
                         <div className="form-group">

@@ -31,6 +31,19 @@ app.post('/upload', function(req, res) {
     })
 });
 
+app.post('/photos', function(req, res) {
+    upload(req, res, err => {
+        if(err) {
+            return res.status(500).json(err)
+        }
+        return res.status(200).send(req.file)
+    })
+})
+
+app.delete('/photos', function(req, res) {
+    console.log('Image was removed')
+})
+
 app.listen(8000, function() {
     console.log('App running on port 8000')
 })
