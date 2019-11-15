@@ -18,36 +18,6 @@ class ImageUploader extends Component {
         this.checkFileSize = this.checkFileSize.bind(this);
     }
 
-    onChangeHandler(event) {
-        console.log(event.target.files)
-        var files = event.target.files
-
-        if(this.maxSelectFile(event) && this.checkMimeType(event) && this.checkMimeType(event)) {
-            this.setState({
-                selectedFile: files,
-            })
-        }
-    }
-
-    onUploadClickHandler() {
-        const data = new FormData()
-        for (let i = 0; i < this.state.selectedFile[i]; i++) {
-            data.append('file', this.state.selectedFile[i])
-        }
-        axios.post("http://localhost:8000/upload", data, { 
-            // receive two parameters -  endpoint url & form data
-            onUploadProgress: ProgressEvent => {
-                this.setState({
-                    loaded: (ProgressEvent.loaded / ProgressEvent.total*100)
-                })
-            }
-        })
-        .then(res => { 
-            // then print response status
-            console.log(res.statusText)
-        })
-    }
-
     maxSelectFile(event) {
         let files = event.target.files
         if (files.length > 3) {
@@ -62,7 +32,7 @@ class ImageUploader extends Component {
     checkMimeType(event) {
         let files = event.target.files
         let err = []
-        const types = ['image/png', 'image/jpeg']
+        const types = ['image/png', 'image/jpeg', 'image/jpg', 'image/JPG']
 
         for (let i = 0; i < files.length; i++) {
             if (types.every(type => files[i].type !== type)) {
@@ -98,6 +68,40 @@ class ImageUploader extends Component {
         return true
     }
 
+    onChangeHandler(event) {
+        console.log(event.target.files)
+        var files = event.target.files
+
+        if(this.maxSelectFile(event) && this.checkMimeType(event) && this.checkMimeType(event)) {
+            this.setState({
+                selectedFile: files,
+            })
+        }
+    }
+
+    onUploadClickHandler() {
+        const data = new FormData()
+
+        if (this.state.selectedFile === null) {
+            alert("Please select a .jpg or .png image")
+        } else {
+            for (let i = 0; i < this.state.selectedFile[i]; i++) {
+                data.append('file', this.state.selectedFile[i])
+            }
+            axios.post("http://localhost:8000/upload", data, { 
+                // receive two parameters -  endpoint url & form data
+                onUploadProgress: ProgressEvent => {
+                    this.setState({
+                        loaded: (ProgressEvent.loaded / ProgressEvent.total*100)
+                    })
+                }
+            })
+            .then(res => { 
+                // then print response status
+                console.log(res.statusText)
+            })
+        }
+    }
 
     render() {
         return(
